@@ -1,0 +1,3 @@
+The Knight's Travails program. This program takes two points on an 8x8 board and determines the shortest path between them. Points are inputted as multi-dimensional arrays ([1][5]).
+
+The basic algorithm is that the program takes a start and finish point. Based on the 8 possible moves a Knight may make (+/-1/2, +/-1/2), it tries each route, saving the first route/length as the fastest array. If the next route is quicker, this becomes the fastest array. 
