@@ -1,29 +1,55 @@
 class Node
-attr_accessor :data, :next_move
-
-def initialize(data=nil, next_move=nil)
+attr_accessor :data, :ptmo, :popt, :mtmo, :min_move_array, :counter, :finish
+def initialize(data=nil, finish=finish)
 @data=data
-@next_move
+@ptmo
+@popt
+@mtmo
+#@min_move_array=[]
+#@temp_array=[]
+@counter=0
+#@finish=finish
+#@tree=Node.new([3,3])
+#@moves=[[2,-1],[1,2],[2,1]]
+end
 
+def mover(node)
+	@counter+=1
+	return knight if node.data==@finish
+	return if node.data[0]>9 || node.data[1]>9
+	if node.data[0]-2>0 && node.data[1]-1>0
+	node.mtmo=Node.new([node.data[0]-2,node.data[1]-1])
+	temp=node.mtmo
+	mover(temp)
+	end
+	if node.data[0]+1<9 && node.data[1]+2<9
+	node.popt=Node.new([node.data[0]+1,node.data[1]+2])
+	temp=node.popt
+	mover(temp)
+	end
+	if node.data[0]+2<9 && node.data[1]-1>0
+	node.ptmo=Node.new([node.data[0]+2,node.data[1]-1])
+	temp=node.ptmo
+	mover(temp)
+	end
 end
 
 end
 
-class Knight 
-attr_accessor :min_move_array
+knight=Node.new([3,3], [4,3])
+knight.mover(knight)
+puts knight.counter
 
-def initialize
-@min_move_array=[]
-@tree=Node.new([1,2])
+
+
+def comparr(arr1, arr2)
+  if arr2.length<arr1.length
+    arr1=arr2.clone
+  end
 end
 
-#def knight_moves(start, finish)
-#	tree=Node.new(start)
-#	tree.move(start, 2,1)
-  
-#end
 
-def move(x,y)
+def old_move(@tree)
   node=@tree
   #temparray will be used later to check pre-existing node points
   temp_array=[]
@@ -51,13 +77,32 @@ def move(x,y)
 	@min_move_array
 end
 
-def arr_comparison(arr1, arr2)
-  if arr2.length<arr1.length
-    arr1=arr2.clone
+def move
+  @tree
+  @counter=0
+  iterate
+  puts @min_move_array.length
+  @min_move_array
+
+end
+ 
+def iterate
+  for i in 0..2  	
+	#puts "#{@moves[i][0]} and #{@moves[i][1]}"
+	#puts "#{@tree.data[0]} and #{@tree.data[1]}"
+	checkone=@tree.data[0]+@moves[i][0]
+	checktwo=@tree.data[1]+@moves[i][1]	
+	#if @counter<3
+	  	if checkone<9 && checktwo<9
+	  		if @temp_array.include?([checkone, checktwo])==false  	
+	  			temp=@tree.next_move		
+	  			temp=Node.new([checkone, checktwo])
+	  			@temp_array << temp.data
+	  			@min_move_array << temp.data
+	  		end
+	  	end
+	#end
+  	#check
   end
+  iterate
 end
-
-end
-
-knight=Knight.new
-knight.move(2,1)
